@@ -10,8 +10,18 @@ public class Farma {
 	
 	public Farma() {
 		// Add Medicamentos do banco na lista
+		atualizaDados();
+	}
+	
+	
+	public void atualizaDados() {
 		medList = DBacessor.readAll();	
 		qtdMedCadastrados = medList.size();
+		
+	}
+	
+	public ArrayList<Medicamento> findMed(String name){
+		return DBacessor.readName(name);
 	}
 	
 	public Medicamento retornarObjetos(int id) {
@@ -20,6 +30,7 @@ public class Farma {
 	public int getSize() {
 		return qtdMedCadastrados;
 	}
+	
 	
 	
 }

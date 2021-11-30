@@ -10,6 +10,7 @@ public class Medicamento {
 	private String descricao;
 	private float preco;
 	
+	
 	public Medicamento(int id, int mg, float preco, String nome, String descricao, int qtd) {
 		this.descricao = descricao;
 		this.ID = id;
@@ -67,6 +68,7 @@ public class Medicamento {
 	
 	public void cadastrarNovo() {
 		DBacessor.insert(nome, MG, descricao, QTD, preco);
+		
 	}
 	public void alterarEstoque(int value) {
 		DBacessor.updateEstoque(value, ID);
