@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import business.Medicamento;
 
 
 public class DBacessor {
@@ -21,7 +23,6 @@ public class DBacessor {
 			ps.setString(4, descr);
 			ps.setInt(5, qtd);
 			ps.execute();
-			System.out.println("Inserido");
 		}catch (SQLException e) {
 			// TODO: handle exception
 			System.out.print(e);
@@ -29,28 +30,42 @@ public class DBacessor {
 		
 	}
 	
-	public static void readAll() {
+	public static ArrayList<Medicamento> readAll() {
 		Connection con = DBConnection.connection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		ArrayList<Medicamento> medList = new ArrayList<Medicamento>();
+		
 		try {
 			String query = "SELECT * FROM farma";
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
-			System.out.println("\nResultado");
 			while(rs.next()) {
-				String nome = rs.getString("Nome");
-				String Desc = rs.getString("Descricao");
-				int mg = rs.getInt("Miligramas");
-				int qtd = rs.getInt("Qtd");
-				float preco = rs.getFloat("Preco");
+			
+				medList.add(new Medicamento(rs.getInt("ID"), rs.getInt("Miligramas"), rs.getFloat("Preco"),
+						rs.getString("Nome"), rs.getString("Descricao"), rs.getInt("ID")));
 				
-				
-				System.out.println(nome +" "+ Desc + " " + qtd );
 			}
 			
 		}catch (SQLException e) {
 			// TODO: handle exception
+			System.out.print(e);
+		}
+		return medList;	
+	}
+	
+	public static void updateEstoque(int newValue, int ID) {
+		Connection con = DBConnection.connection();
+		String query = "UPDATE farma set Qtd = ? WHERE ID = ?";
+		PreparedStatement ps = null;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setInt(1, newValue);
+			ps.setInt(2, ID);
+			ps.execute();			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
